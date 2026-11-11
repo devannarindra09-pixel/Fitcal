@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fitcal – IMT, Jadwal Olahraga & Kalori</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff;--surface:#f6f6f4;--text:#0b0b0b;--muted:#6b6b6b;--line:#e4e4e0;--accent:#ff6a00;--on-accent:#fff;--ink:#0b0b0b;--on-ink:#fff;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b0b0b;--surface:#161616;--text:#f5f5f2;--muted:#9a9a96;--line:#2a2a2a;--ink:#f5f5f2;--on-ink:#0b0b0b;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0b0b0b;--surface:#161616;--text:#f5f5f2;--muted:#9a9a96;--line:#2a2a2a;--ink:#f5f5f2;--on-ink:#0b0b0b;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.55}
+.wrap{max-width:880px;margin:0 auto;padding:0 20px}
+header{display:flex;align-items:center;justify-content:space-between;padding:22px 0}
+.logo{font-weight:800;font-size:24px;letter-spacing:-.5px}.logo b{color:var(--accent)}
+.icon-btn{background:none;border:1px solid var(--line);color:var(--text);border-radius:999px;padding:7px 14px;font:inherit;font-size:13px;cursor:pointer}
+.hero{padding:34px 0 26px}
+.hero h1{font-size:clamp(34px,7vw,58px);line-height:1.05;letter-spacing:-1.5px;margin:0 0 14px;font-weight:800}
+.hero h1 span{color:var(--accent)}
+.hero p{color:var(--muted);max-width:520px;margin:0}
+nav{display:flex;gap:6px;margin:26px 0 22px;background:var(--surface);padding:5px;border-radius:14px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+nav button{flex:1;border:0;background:none;color:var(--muted);font:inherit;font-weight:600;font-size:14px;padding:11px 6px;border-radius:10px;cursor:pointer}
+nav button.on{background:var(--ink);color:var(--on-ink)}
+nav button:disabled{opacity:.4;cursor:not-allowed}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px;margin-bottom:18px}
+h2{margin:0 0 4px;font-size:22px;letter-spacing:-.4px}
+.sub{color:var(--muted);font-size:14px;margin:0 0 20px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:560px){.grid{grid-template-columns:1fr}}
+label{display:block;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:6px}
+input,select,textarea{width:100%;padding:13px 14px;border:1px solid var(--line);background:var(--bg);color:var(--text);border-radius:12px;font:inherit;font-size:16px}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:0}
+.btn{background:var(--accent);color:var(--on-accent);border:0;border-radius:12px;padding:14px 22px;font:inherit;font-weight:700;cursor:pointer;margin-top:20px}
+.btn.ghost{background:none;color:var(--text);border:1px solid var(--line)}
+.btn:disabled{opacity:.5}
+.seg{display:flex;gap:8px}.seg button{flex:1;padding:13px;border:1px solid var(--line);background:var(--bg);color:var(--text);border-radius:12px;font:inherit;font-weight:600;cursor:pointer}
+.seg button.on{background:var(--ink);color:var(--on-ink);border-color:var(--ink)}
+.big{font-size:64px;font-weight:800;letter-spacing:-2px;line-height:1}
+.pill{display:inline-block;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:13px;padding:5px 12px;border-radius:999px;margin-left:8px;vertical-align:middle}
+.bar{position:relative;height:10px;border-radius:999px;margin:22px 0 8px;background:linear-gradient(90deg,#8a8a8a 0 18%,#0b0b0b 18% 52%,#ff6a00 52% 72%,#c24a00 72% 100%)}
+.bar i{position:absolute;top:-6px;width:4px;height:22px;background:var(--text);border-radius:2px;border:2px solid var(--bg)}
+.scale{display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}
+.stat{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:14px}
+.stat small{display:block;color:var(--muted);font-size:12px}.stat b{font-size:22px;letter-spacing:-.5px}
+@media(max-width:560px){.stat b{font-size:18px}}
+.days{display:grid;gap:10px}
+.day{display:grid;grid-template-columns:64px 1fr auto;gap:14px;align-items:center;background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.day .d{font-weight:800;color:var(--accent)}
+.day .t{font-weight:600}.day .n{font-size:13px;color:var(--muted)}
+.day .m{font-size:13px;font-weight:600;white-space:nowrap}
+.day.rest .d{color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.chip{border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:8px 14px;font-size:14px;font-weight:500}
+.tip{border-left:3px solid var(--accent);padding:4px 0 4px 14px;color:var(--muted);font-size:14px;margin:18px 0 0}
+.drop{border:2px dashed var(--line);border-radius:18px;padding:30px 16px;text-align:center;cursor:pointer;background:var(--bg)}
+.drop:hover{border-color:var(--accent)}
+.drop img{max-width:100%;max-height:240px;border-radius:12px}
+.ring{--p:0;width:150px;height:150px;border-radius:50%;background:conic-gradient(var(--accent) calc(var(--p)*1%),var(--line) 0);display:grid;place-items:center;flex:none}
+.ring div{width:118px;height:118px;border-radius:50%;background:var(--surface);display:grid;place-items:center;text-align:center;font-size:12px;color:var(--muted)}
+.ring b{display:block;font-size:26px;color:var(--text);letter-spacing:-1px}
+.sum{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+.log{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:8px}
+.log li{display:flex;justify-content:space-between;gap:10px;align-items:center;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:15px}
+.log li small{color:var(--muted);display:block}
+.log b{color:var(--accent);white-space:nowrap}
+.x{background:none;border:0;color:var(--muted);cursor:pointer;font-size:18px;padding:0 4px}
+.res{margin-top:18px;background:var(--bg);border:1px solid var(--accent);border-radius:16px;padding:18px}
+.msg{font-size:14px;color:var(--muted);margin-top:12px}
+.wk{display:flex;gap:8px;height:170px;margin-top:14px}.wk .col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}.wk .tr{flex:1;width:100%;display:flex;align-items:flex-end;justify-content:center}.wk .b{width:100%;max-width:38px;background:var(--accent);border-radius:8px 8px 3px 3px;min-height:3px}.wk .b.over{background:var(--ink)}.wk .v{font-size:11px;color:var(--muted);height:14px}.wk small{font-size:12px;color:var(--muted)}
+.hide{display:none}
+footer{padding:30px 0 40px;color:var(--muted);font-size:12px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><div class="logo">Fit<b>cal</b></div><button class="icon-btn" id="theme">Tema</button></header>
+
+<section class="hero">
+<h1>Hitung IMT.<br><span>Atur olahraga & kalori.</span></h1>
+<p>Mulai dengan cek IMT. Fitcal lalu menyusun jadwal olahraga, target kalori harian, dan menghitung kalori makananmu lewat foto.</p>
+</section>
+
+<nav>
+<button data-t="imt" class="on">1 · IMT</button>
+<button data-t="plan" disabled>2 · Olahraga</button>
+<button data-t="scan" disabled>3 · Scan Makanan</button>
+</nav>
+
+<!-- IMT -->
+<section id="imt">
+<div class="card">
+<h2>Cek IMT kamu</h2><p class="sub">Semua rekomendasi di Fitcal berdasarkan data ini.</p>
+<div class="grid">
+<div><label>Jenis kelamin</label><div class="seg" id="sex"><button class="on" data-v="m">Laki-laki</button><button data-v="f">Perempuan</button></div></div>
+<div><label for="age">Usia (tahun)</label><input id="age" type="number" inputmode="numeric" min="12" max="90" placeholder="25"></div>
+<div><label for="h">Tinggi (cm)</label><input id="h" type="number" inputmode="decimal" placeholder="170"></div>
+<div><label for="w">Berat (kg)</label><input id="w" type="number" inputmode="decimal" placeholder="65"></div>
+</div>
+<div style="margin-top:14px"><label for="act">Aktivitas harian</label>
+<select id="act"><option value="1.2">Jarang bergerak (kerja duduk)</option><option value="1.375" selected>Ringan (olahraga 1–3x/minggu)</option><option value="1.55">Sedang (olahraga 3–5x/minggu)</option><option value="1.725">Aktif (olahraga 6–7x/minggu)</option></select></div>
+<button class="btn" id="calc">Hitung IMT</button>
+<div class="msg" id="err"></div>
+</div>
+<div class="card hide" id="out">
+<div style="display:flex;align-items:center;flex-wrap:wrap;gap:8px"><span class="big" id="bmi">0</span><span class="pill" id="cat"></span></div>
+<div class="bar"><i id="mark"></i></div>
+<div class="scale"><span>Kurus</span><span>Normal</span><span>Gemuk</span><span>Obesitas</span></div>
+<p id="desc" class="sub" style="margin-top:16px"></p>
+<div class="stats">
+<div class="stat"><small>Kalori basal</small><b id="bmr">–</b></div>
+<div class="stat"><small>Kalori harian</small><b id="tdee">–</b></div>
+<div class="stat"><small>Target Fitcal</small><b id="target" style="color:var(--accent)">–</b></div>
+</div>
+<p class="tip" id="goal"></p>
+<button class="btn" id="go">Lihat jadwal olahraga →</button>
+</div>
+</section>
+
+<!-- PLAN -->
+<section id="plan" class="hide">
+<div class="card"><h2>Olahraga yang cocok</h2><p class="sub" id="psub"></p><div class="chips" id="sports"></div></div>
+<div class="card"><h2>Jadwal 7 hari</h2><p class="sub">Disesuaikan dengan kategori IMT kamu.</p><div class="days" id="days"></div>
+<p class="tip">Pemanasan 5–10 menit sebelum dan pendinginan sesudahnya. Kalau ada kondisi medis, konsultasikan dulu dengan dokter.</p>
+<button class="btn" id="go2">Lanjut ke scan makanan →</button></div>
+</section>
+
+<!-- SCAN -->
+<section id="scan" class="hide">
+<div class="card">
+<div class="sum"><div class="ring" id="ring"><div><span><b id="eaten">0</b>kkal</span></div></div>
+<div><h2>Kalori hari ini</h2><p class="sub" style="margin:0">Target <b id="tg">–</b> kkal · Sisa <b id="left" style="color:var(--accent)">–</b> kkal</p></div></div>
+</div>
+<div class="card">
+<h2>Scan makanan / minuman</h2><p class="sub">Foto makananmu atau tulis namanya. Hasil berupa estimasi.</p>
+<label class="drop" for="file" id="drop"><div id="dropin"><b>Ambil / unggah foto</b><br><span class="sub">Ketuk untuk membuka kamera atau galeri</span></div></label>
+<input id="file" type="file" accept="image/*" class="hide">
+<div style="margin-top:14px"><label for="txt">Atau tulis (contoh: nasi goreng 1 piring + es teh manis)</label><input id="txt" type="text" list="dl" placeholder="Nama makanan / minuman"><datalist id="dl"></datalist></div>
+<button class="btn" id="run">Hitung kalori</button>
+<div class="msg" id="smsg"></div>
+<div class="res hide" id="res"></div>
+</div>
+<div class="card"><h2>Catatan makan</h2><ul class="log" id="log"></ul><p class="msg" id="empty">Belum ada makanan yang dicatat.</p></div>
+<div class="card"><h2>Riwayat 7 hari</h2><p class="sub" id="wkavg"></p><div class="wk" id="wk"></div><p class="msg">Batang hitam = melebihi target. Data tersimpan di perangkat ini.</p><button class="btn ghost" id="reset">Hapus semua data</button></div>
+</section>
+
+<footer>Fitcal memberikan estimasi umum, bukan pengganti saran dokter atau ahli gizi.</footer>
+</div>
+
+<script>
+var S={sex:'m',bmi:0,cat:null,target:0,eaten:0,log:[],img:null,last:null};
+var $=function(i){return document.getElementById(i)};
+function dk(x){return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0')}
+var KEY='fitcal-v1',TODAY=dk(new Date());
+function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return {}}}
+function save(){try{var d=load();d.logs=d.logs||{};d.logs[TODAY]=S.log;if(S.profile)d.profile=S.profile;localStorage.setItem(KEY,JSON.stringify(d))}catch(e){}}
+var P={
+kurus:{n:'Kurus',d:'IMT di bawah 18,5. Fokus menambah massa otot dan berat badan secara sehat.',g:'Surplus kalori sekitar +400 kkal untuk menaikkan berat badan perlahan.',adj:400,
+sp:['Latihan beban ringan','Bodyweight (push-up, squat)','Yoga','Jalan santai','Renang santai'],
+w:[['Beban tubuh bagian atas','Push-up, dumbbell press','40 mnt'],['Jalan santai','Pemulihan aktif','30 mnt'],['Beban tubuh bagian bawah','Squat, lunge, glute bridge','40 mnt'],null,['Full body','Compound ringan','45 mnt'],['Yoga','Fleksibilitas & core','30 mnt'],null]},
+normal:{n:'Normal',d:'IMT ideal. Pertahankan dengan kombinasi kardio dan latihan kekuatan.',g:'Kalori seimbang sesuai kebutuhan harian untuk menjaga berat badan.',adj:0,
+sp:['Lari','Bersepeda','Renang','Latihan beban','HIIT ringan','Futsal / badminton'],
+w:[['Lari','Pace nyaman','30 mnt'],['Latihan beban','Atas tubuh','40 mnt'],['Bersepeda / renang','Kardio sedang','40 mnt'],['Latihan beban','Bawah tubuh','40 mnt'],['HIIT ringan','Interval 30/30','25 mnt'],['Olahraga rekreasi','Badminton / futsal','60 mnt'],null]},
+gemuk:{n:'Gemuk',d:'IMT di atas normal. Mulai dengan kardio berdampak rendah dan latihan kekuatan.',g:'Defisit kalori sekitar −400 kkal untuk turun berat badan bertahap.',adj:-400,
+sp:['Jalan cepat','Bersepeda','Renang','Latihan beban ringan','Senam / zumba'],
+w:[['Jalan cepat','Kardio dasar','40 mnt'],['Latihan beban ringan','Full body','30 mnt'],['Bersepeda santai','Kardio rendah dampak','40 mnt'],null,['Renang / aqua jogging','Aman untuk sendi','40 mnt'],['Jalan cepat','Naikkan tempo','45 mnt'],null]},
+obes:{n:'Obesitas',d:'IMT sangat di atas normal. Utamakan gerakan rendah dampak dan konsistensi.',g:'Defisit kalori sekitar −600 kkal. Disarankan berkonsultasi dengan dokter.',adj:-600,
+sp:['Jalan santai','Renang / aqua jogging','Sepeda statis','Latihan duduk (chair workout)','Peregangan'],
+w:[['Jalan santai','Mulai pelan','20 mnt'],['Chair workout','Penguatan ringan','20 mnt'],['Sepeda statis','Resistensi rendah','25 mnt'],null,['Renang / aqua jogging','Tanpa beban sendi','30 mnt'],['Jalan santai','Tambah 5 menit','25 mnt'],null]}};
+var DAYS=['Sen','Sel','Rab','Kam','Jum','Sab','Min'];
+
+function show(t){['imt','plan','scan'].forEach(function(s){$(s).classList.toggle('hide',s!==t)});
+document.querySelectorAll('nav button').forEach(function(b){b.classList.toggle('on',b.dataset.t===t)});
+window.scrollTo({top:0,behavior:'smooth'})}
+document.querySelectorAll('nav button').forEach(function(b){b.onclick=function(){if(!b.disabled)show(b.dataset.t)}});
+$('sex').onclick=function(e){var v=e.target.dataset.v;if(!v)return;S.sex=v;this.querySelectorAll('button').forEach(function(b){b.classList.toggle('on',b.dataset.v===v)})};
+
+$('calc').onclick=function(){
+var h=+$('h').value,w=+$('w').value,a=+$('age').value;
+if(!(h>100&&h<250&&w>20&&w<300&&a>=12&&a<=90)){$('err').textContent='Isi usia (12–90), tinggi (100–250 cm), dan berat (20–300 kg) dengan benar.';return}
+$('err').textContent='';
+var bmi=w/Math.pow(h/100,2);S.bmi=bmi;
+var k=bmi<18.5?'kurus':bmi<25?'normal':bmi<27?'gemuk':'obes';S.cat=k;
+var bmr=10*w+6.25*h-5*a+(S.sex==='m'?5:-161);
+var tdee=bmr*(+$('act').value);
+var tg=Math.max(S.sex==='m'?1500:1200,Math.round((tdee+P[k].adj)/10)*10);S.target=tg;
+$('bmi').textContent=bmi.toFixed(1);$('cat').textContent=P[k].n;
+$('desc').textContent=P[k].d;$('goal').textContent=P[k].g;
+$('bmr').textContent=Math.round(bmr)+' kkal';$('tdee').textContent=Math.round(tdee)+' kkal';$('target').textContent=tg+' kkal';
+var pos=Math.min(98,Math.max(2,(bmi-14)/(34-14)*100));$('mark').style.left=pos+'%';
+$('out').classList.remove('hide');$('out').scrollIntoView({behavior:'smooth',block:'nearest'});
+$('psub').textContent='Kategori '+P[k].n+' (IMT '+bmi.toFixed(1)+')';
+$('sports').innerHTML=P[k].sp.map(function(s){return '<span class="chip">'+s+'</span>'}).join('');
+$('days').innerHTML=P[k].w.map(function(x,i){return x?'<div class="day"><span class="d">'+DAYS[i]+'</span><div><div class="t">'+x[0]+'</div><div class="n">'+x[1]+'</div></div><span class="m">'+x[2]+'</span></div>':'<div class="day rest"><span class="d">'+DAYS[i]+'</span><div><div class="t">Istirahat</div><div class="n">Pemulihan otot</div></div><span class="m">–</span></div>'}).join('');
+document.querySelectorAll('nav button').forEach(function(b){b.disabled=false});
+$('tg').textContent=tg;render();
+S.profile={h:h,w:w,a:a,sex:S.sex,act:$('act').value};save();
+};
+$('go').onclick=function(){show('plan')};$('go2').onclick=function(){show('scan')};
+
+function render(){
+var e=S.log.reduce(function(s,x){return s+x.kal},0);S.eaten=e;
+$('eaten').textContent=e;$('left').textContent=Math.max(0,S.target-e);
+$('ring').style.setProperty('--p',Math.min(100,e/S.target*100));
+$('empty').classList.toggle('hide',S.log.length>0);
+$('log').innerHTML='';
+S.log.forEach(function(x,i){var li=document.createElement('li');
+var l=document.createElement('div');l.textContent=x.nama;var s=document.createElement('small');s.textContent=x.porsi||'';l.appendChild(s);
+var b=document.createElement('b');b.textContent=x.kal+' kkal';
+var d=document.createElement('button');d.className='x';d.textContent='×';d.setAttribute('aria-label','Hapus');d.onclick=function(){S.log.splice(i,1);render()};
+li.appendChild(l);li.appendChild(b);li.appendChild(d);$('log').appendChild(li)});save();renderWeek()}
+
+$('file').onchange=function(){var f=this.files[0];if(!f)return;S.img=f;
+var r=new FileReader();r.onload=function(){$('dropin').innerHTML='<img alt="Foto makanan" src="'+r.result+'">'};r.readAsDataURL(f)};
+
+// Fallback offline database
+var DB={'nasi putih':[1,'1 piring (150 g)',200],'nasi goreng':[1,'1 piring',330],'mie goreng':[1,'1 piring',400],'ayam goreng':[1,'1 potong',260],'telur':[1,'1 butir',75],'tempe':[1,'1 potong',80],'tahu':[1,'1 potong',40],'bakso':[1,'1 mangkuk',350],'sate ayam':[1,'10 tusuk',300],'gado-gado':[1,'1 porsi',300],'soto':[1,'1 mangkuk',250],'pisang':[1,'1 buah',90],'apel':[1,'1 buah',80],'roti tawar':[1,'1 lembar',70],'es teh manis':[1,'1 gelas',120],'teh manis':[1,'1 gelas',100],'kopi susu':[1,'1 gelas',150],'susu':[1,'1 gelas',120],'air putih':[1,'1 gelas',0]};
+[['nasi uduk','1 piring',350],['nasi kuning','1 piring',300],['nasi padang','1 porsi lengkap',650],['rendang','1 potong',195],['rawon','1 mangkuk',300],['pecel','1 porsi',250],['lontong sayur','1 porsi',300],['bubur ayam','1 mangkuk',300],['mie ayam','1 mangkuk',450],['indomie goreng','1 bungkus',380],['ketoprak','1 porsi',350],['siomay','1 porsi',300],['batagor','1 porsi',350],['martabak manis','1 potong',300],['martabak telur','1 potong',250],['bakwan','1 buah',100],['pisang goreng','1 buah',140],['tempe goreng','1 potong',110],['ikan goreng','1 potong',200],['ikan bakar','1 potong',180],['ayam bakar','1 potong',230],['ayam geprek','1 porsi',400],['sayur asem','1 mangkuk',60],['capcay','1 porsi',150],['pecel lele','1 porsi',450],['burger','1 buah',350],['kentang goreng','1 porsi',320],['pizza','1 slice',285],['donat','1 buah',250],['cokelat','1 potong',150],['es krim','1 scoop',200],['jus jeruk','1 gelas',110],['jus alpukat','1 gelas',250],['es campur','1 mangkuk',300],['boba','1 gelas',300],['kopi hitam','1 cangkir',5],['cola','1 kaleng',140],['oatmeal','1 mangkuk',150],['yogurt','1 cup',120],['semangka','1 potong',45],['jeruk','1 buah',60],['mangga','1 buah',100],['alpukat','1/2 buah',160],['singkong rebus','1 potong',160],['ubi rebus','1 buah',120],['kacang tanah','30 g',160],['roti bakar cokelat','2 lembar',250],['dada ayam rebus','100 g',165],['salmon','100 g',200]].forEach(function(x){DB[x[0]]=[1,x[1],x[2]]});
+$('dl').innerHTML=Object.keys(DB).sort().map(function(k){return '<option value="'+k+'">'}).join('');
+function local(q){q=q.toLowerCase();var it=[];Object.keys(DB).sort(function(a,b){return b.length-a.length}).forEach(function(k){if(q.indexOf(k)>-1){q=q.replace(k,' ');it.push({nama:k,porsi:DB[k][1],kal:DB[k][2]})}});return it.length?{items:it,catatan:'Estimasi dari database dasar Fitcal.'}:null}
+
+function b64(f){return new Promise(function(res){var im=new Image(),u=URL.createObjectURL(f);im.onload=function(){var k=Math.min(1,1280/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);res(c.toDataURL('image/jpeg',.85).split(',')[1])};im.onerror=function(){res(null)};im.src=u})}
+async function viaServer(q){var body={text:q};if(S.img)body.image=await b64(S.img);var r=await fetch('/api/scan',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok)throw new Error('server');return r.json()}
+async function ask(){
+var sample=(window.claude&&claude.use)?await claude.use('sample'):null;
+if(!sample)return viaServer($('txt').value.trim());
+var q=$('txt').value.trim(),opts={};
+var p='Kamu ahli gizi Indonesia. Estimasi kalori makanan/minuman'+(S.img?' pada foto':'')+(q?' berikut: '+q:'')+'. Balas HANYA JSON: {"items":[{"nama":string,"porsi":string,"kal":number}],"catatan":string singkat dalam Bahasa Indonesia}. Gunakan porsi umum Indonesia jika tidak disebut. Jika bukan makanan/minuman, items kosong.';
+if(S.img){var lim=await sample.limits();if(lim&&lim.images)opts.images=[S.img]}
+opts.cache=false;
+return sample.json(p,opts)}
+
+$('run').onclick=async function(){
+var q=$('txt').value.trim();
+if(!q&&!S.img){$('smsg').textContent='Unggah foto atau tulis nama makanan dulu.';return}
+$('run').disabled=true;$('smsg').textContent='Menghitung kalori…';$('res').classList.add('hide');
+var r=null;
+try{r=await ask()}catch(e){r=null}
+if(!r&&q)r=local(q);
+$('run').disabled=false;
+if(!r||!r.items||!r.items.length){$('smsg').textContent=r?'Makanan tidak terdeteksi. Coba foto lebih jelas atau tulis namanya.':'Scan AI belum aktif. Jalankan server (node server.js) dengan API key, atau tulis nama makanan sederhana, misalnya "nasi goreng".';return}
+$('smsg').textContent='';S.last=r;
+var tot=r.items.reduce(function(s,x){return s+(+x.kal||0)},0);
+var box=$('res');box.innerHTML='';
+r.items.forEach(function(x){var d=document.createElement('div');d.style.cssText='display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid var(--line)';
+var a=document.createElement('span');a.textContent=x.nama+(x.porsi?' · '+x.porsi:'');var b=document.createElement('b');b.textContent=Math.round(x.kal)+' kkal';d.appendChild(a);d.appendChild(b);box.appendChild(d)});
+var t=document.createElement('div');t.style.cssText='font-size:28px;font-weight:800;margin-top:12px;letter-spacing:-.5px';t.innerHTML='Total <span style="color:var(--accent)"></span>';t.lastChild.textContent=Math.round(tot)+' kkal';box.appendChild(t);
+if(r.catatan){var n=document.createElement('p');n.className='msg';n.textContent=r.catatan;box.appendChild(n)}
+var add=document.createElement('button');add.className='btn';add.textContent='Tambah ke catatan hari ini';
+add.onclick=function(){r.items.forEach(function(x){S.log.push({nama:x.nama,porsi:x.porsi,kal:Math.round(x.kal)})});render();box.classList.add('hide');$('txt').value='';S.img=null;$('file').value='';$('dropin').innerHTML='<b>Ambil / unggah foto</b><br><span class="sub">Ketuk untuk membuka kamera atau galeri</span>'};
+box.appendChild(add);box.classList.remove('hide')};
+
+$('theme').onclick=function(){var r=document.documentElement;var dark=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches;r.dataset.theme=dark?'light':'dark'};
+function renderWeek(){var d=load().logs||{},now=new Date(),rows=[],mx=S.target||2000,tot=0,n=0,N=['Min','Sen','Sel','Rab','Kam','Jum','Sab'];
+for(var i=6;i>=0;i--){var x=new Date(now.getFullYear(),now.getMonth(),now.getDate()-i),k=dk(x);var v=(k===TODAY?S.log:(d[k]||[])).reduce(function(s,y){return s+y.kal},0);rows.push([N[x.getDay()],v]);if(v){tot+=v;n++}mx=Math.max(mx,v)}
+$('wk').innerHTML=rows.map(function(r){return '<div class="col"><div class="v">'+(r[1]||'')+'</div><div class="tr"><div class="b'+(r[1]>S.target?' over':'')+'" style="height:'+Math.round(r[1]/mx*100)+'%"></div></div><small>'+r[0]+'</small></div>'}).join('');
+$('wkavg').textContent=n?'Rata-rata '+Math.round(tot/n)+' kkal/hari · target '+S.target+' kkal':'Belum ada data minggu ini.'}
+$('reset').onclick=function(){if(!confirm('Hapus semua data Fitcal di perangkat ini?'))return;try{localStorage.removeItem(KEY)}catch(e){}S.log=[];render()};
+(function(){var d=load();if(d.logs&&d.logs[TODAY])S.log=d.logs[TODAY];var p=d.profile;if(p&&p.h){$('h').value=p.h;$('w').value=p.w;$('age').value=p.a;$('act').value=p.act||'1.375';S.sex=p.sex||'m';document.querySelectorAll('#sex button').forEach(function(b){b.classList.toggle('on',b.dataset.v===S.sex)});$('calc').click()}})();
+</script>
+</body>
+</html>
